@@ -49,6 +49,11 @@ class ArgumentParser:
             default=False,
             help="enables the dashboard timeline to display events",
         )
+        self.parser.add_argument(
+            "--name",
+            default=None,
+            help="Name of the agent."
+        )
 
     def add_nsp_parser(self):
         nsp_parser = self.parser.add_argument_group("Neural Semantic Parser Args")
@@ -86,6 +91,7 @@ class ArgumentParser:
             default=True,
             help="Run the agent without automatic model/dataset downloads. Useful for testing models locally.",
         )
+        
 
     def add_mc_parser(self):
         mc_parser = self.parser.add_argument_group("Minecraft Agent Args")
