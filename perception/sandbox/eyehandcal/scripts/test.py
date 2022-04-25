@@ -1,8 +1,3 @@
-
-# Copyright (c) Facebook, Inc. and its affiliates.
-
-# This source code is licensed under the MIT license found in the
-# LICENSE file in the root directory of this source tree.
 from ast import For
 from logging import RootLogger
 import numpy as np
@@ -57,8 +52,8 @@ if __name__ == "__main__":
         # cam_quat = ee_b_quat * c_ee_quat
         rot1 = R.from_quat(ee_b_quat).as_quat()
         rot2 = R.from_rotvec(c_ee_rotvec).as_quat()
-        #print(f"rot1: {rot1}, type - {type(rot1)}")
-        #print(f"rot1: {rot2}, type - {type(rot2)}")
+        print(f"rot1: {rot1}, type - {type(rot1)}")
+        print(f"rot1: {rot2}, type - {type(rot2)}")
 
         cam_quat = rot1 * rot2
 
@@ -72,15 +67,3 @@ if __name__ == "__main__":
 getEEpose()
 print("##################################################")
 liveloc()
-
-'''
-    for i in p['xyz']:
-        ee_pos_desired = torch.Tensor(i)
-        for j in p['quat']:
-            ee_quat_desired = torch.Tensor(j)
-            state_log = robot.move_to_ee_pose(
-                position=ee_pos_desired, orientation=ee_quat_desired, time_to_go=10
-            )
-            getEEpose()
-            print()
-'''
