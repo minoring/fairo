@@ -1,15 +1,14 @@
 from ast import For
 from logging import RootLogger
 from os import posix_fadvise
-import torch
 import json
 import numpy as np
 import os
 import sys
 from realsense_wrapper import RealsenseAPI
 import cv2
-
 from polymetis import RobotInterface
+
 if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser()
@@ -36,15 +35,15 @@ if __name__ == "__main__":
             xyz.append(xyz_pose)
             count += 1
             ## save img too
-            imgs = rs.get_rgbd()
-            for j, img in enumerate(imgs):
-                rgb = img[:,:,:3]
-                imgPath = f'/mnt/tmp_nfs_clientshare/jaydv/fairo/perception/sandbox/eyehandcal/scripts/debug/{count}_cam{j}.jpg'
-                cv2.imwrite(imgPath, rgb[:,:,::-1])
-                imgPath = f'/mnt/tmp_nfs_clientshare/jaydv/fairo/perception/sandbox/eyehandcal/scripts/debug/{count}_depth_cam{j}.jpg'
-                dimg = img[:,:,3]
-                cv2.imwrite(imgPath, dimg.astype(np.uint8))
-                print(f"Image {count} saved to {imgPath}")
+            # imgs = rs.get_rgbd()
+            # for j, img in enumerate(imgs):
+            #     rgb = img[:,:,:3]
+            #     imgPath = f'/mnt/tmp_nfs_clientshare/jaydv/fairo/perception/sandbox/eyehandcal/scripts/debug/{count}_cam{j}.jpg'
+            #     cv2.imwrite(imgPath, rgb[:,:,::-1])
+            #     imgPath = f'/mnt/tmp_nfs_clientshare/jaydv/fairo/perception/sandbox/eyehandcal/scripts/debug/{count}_depth_cam{j}.jpg'
+            #     dimg = img[:,:,3]
+            #     cv2.imwrite(imgPath, dimg.astype(np.uint8))
+            #     print(f"Image {count} saved to {imgPath}")
             print("XYZ pose saved")
         else:
             print ("Invalid selection, please try again")

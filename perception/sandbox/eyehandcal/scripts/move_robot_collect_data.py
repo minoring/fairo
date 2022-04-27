@@ -7,26 +7,39 @@ from ast import For
 from logging import RootLogger
 import numpy as np
 import json
+import torch
 from scipy.spatial.transform import Rotation as R
-
 from polymetis import RobotInterface
-
-
+from realsense_wrapper import RealsenseAPI
+import cv2
+import os
 
 if __name__ == "__main__":
     # Initialize robot interface
     robot = RobotInterface(
         ip_address="172.16.0.1",
     )
-    points = open("poses.json")
-    p = json.load(points)
     robot.go_home()
+
+    cwd = os.getcwd()
+    rs = RealsenseAPI()
+    def take_picture(count):
+        imgs = rs.get_rgbd()
+        for i, img in enumerate(imgs):
+            rgb = img[:,:,:3]
+            img_path = f'{cwd}/debug/{count}_cam{i}.jpg'
+            cv2.imwrite(img_path, rgb[:,:,::-1])
+            img_path_depth = f'{cwd}/debug/{count}_depthCam{i}.jpg'
+            dimg = img[:,:,3]
+            cv2.imwrite(img_path_depth, dimg.astype(np.uint8))
 
     def getEEpose():
         ee_pos, ee_quat = robot.get_ee_pose()
         print(f"Current ee position: {ee_pos}")
         print(f"Current ee orientation: {ee_quat}  (xyzw)")
 
+
+    #Location of the EE to base
     def get_ee_b():
         ee_pos, ee_quat = robot.get_ee_pose()
         return ee_pos, ee_quat
@@ -66,21 +79,26 @@ if __name__ == "__main__":
         # quat_mat = quat_rot.as_matrix()
         # cam_quat = quat_mat.dot()
 
-        print(f"Cam pose: {cam_pose}")
-        print("------------------------------")
-        print(f"Rot Quat: {cam_quat}")
-getEEpose()
-print("##################################################")
-liveloc()
+        return cam_pose, cam_quat
 
-'''
-    for i in p['xyz']:
-        ee_pos_desired = torch.Tensor(i)
-        for j in p['quat']:
-            ee_quat_desired = torch.Tensor(j)
-            state_log = robot.move_to_ee_pose(
-                position=ee_pos_desired, orientation=ee_quat_desired, time_to_go=10
-            )
+
+    def robot_move():
+        count = 0
+        while True: 
+            for i in p['xyz']:
+                ee_pos_desired = torch.Tensor(i)
+                for j in p['quat']:
+                    ee_quat_desired = torch.Tensor(j)
+                    state_log = robot.move_to_ee_pose(
+                        position=ee_pos_desired, orientation=ee_quat_desired, time_to_go=10
+                    )
             getEEpose()
             print()
-'''
+
+
+
+    for i in range(50):
+        move_robot()
+        record_rgb()
+        time.sleep(0.01)
+        input()

@@ -144,9 +144,9 @@ if __name__ == '__main__':
 
         data = []
         img_gen=realsense_images()
-        points = json.load(open(args.points_file, 'r'))
-        xyz_points = np.array(points["xyz"])
-        orient_points = np.array(points["quat"])
+        points = json.load(open(args.points_file, 'r'))#reads from the points file
+        xyz_points = np.array(points["xyz"])#creates an array with the xyz points
+        orient_points = np.array(points["quat"])#creates an array with the quat points
         pose_gen = sample_poses_from_data(xyz_points, orient_points, num_points=args.num_points)
         poses = robot_poses(args.ip, pose_gen, args.time_to_go)
         for i, (pos,ori) in enumerate(poses):
