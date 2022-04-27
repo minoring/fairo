@@ -2,10 +2,11 @@ from ipaddress import ip_address
 import json
 import torch
 from polymetis import RobotInterface
+import a0
 
 def robot_move():
     robot = RobotInterface(ip_address = "172.16.0.1")
-    p = a0.Publisher("trajectory")
+    push_p = a0.Publisher("trajectory")
     points = open("poses.json")
     p = json.load(points)
     for i in p['xyz']:
@@ -16,4 +17,4 @@ def robot_move():
                 position=ee_pos_desired, orientation=ee_quat_desired, time_to_go=10
             )
     
-    p.pub("done")
+    push_p.pub("done")

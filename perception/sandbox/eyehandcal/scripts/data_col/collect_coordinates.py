@@ -6,7 +6,6 @@ import numpy as np
 import os
 import sys
 from realsense_wrapper import RealsenseAPI
-import cv2
 from polymetis import RobotInterface
 
 if __name__ == "__main__":
