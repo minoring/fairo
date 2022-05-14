@@ -15,7 +15,7 @@ service PolymetisControllerServer {
   the current controller and get the full robot states.
   */
 
-  // Switch the current controller, and return the log index at start of 
+  // Switch the current controller, and return the log index at start of
   // controller execution
   rpc SetController(stream ControllerChunk) returns(LogInterval) {}
 
@@ -118,6 +118,7 @@ message RobotState {
   float prev_controller_latency_ms = 10;                  //Latency of previous ControlUpdate call
   bool prev_command_successful = 11;                      //Whether previous command packet is successfully transmitted
   int32 error_code = 12;
+  repeated float mass_matrix = 13;
 }
 
 message TorqueCommand {
