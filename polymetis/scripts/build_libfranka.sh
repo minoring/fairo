@@ -13,7 +13,7 @@ LIBFRANKA_PATH="$GIT_ROOT/polymetis/polymetis/src/clients/franka_panda_client/th
 [ ! -d $LIBFRANKA_PATH ] && echo "Directory $LIBFRANKA_PATH does not exist" && exit 1
 
 # Ensure submodules exist
-git submodule update --init --recursive
+# git submodule update --init --recursive
 
 # Build
 BUILD_PATH="${LIBFRANKA_PATH}/build"
