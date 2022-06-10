@@ -4,6 +4,7 @@
 # LICENSE file in the root directory of this source tree.
 import threading
 import queue
+import logging
 
 import grpc
 
@@ -13,6 +14,7 @@ import polymetis_pb2_grpc
 
 EMPTY = polymetis_pb2.Empty()
 
+log = logging.getLogger(__name__)
 
 class GripperInterface:
     """Gripper interface class to initialize a connection to a gRPC gripper server.
@@ -52,7 +54,11 @@ class GripperInterface:
         Returns:
             gripper state (polymetis_pb2.GripperState)
         """
-        return self.grpc_connection.GetState(EMPTY)
+        try:
+            return self.grpc_connection.GetState(EMPTY)
+        except grpc.RpcError as e:
+            log.error(f"Unable to read gripper states: {e}")
+            return None
 
     def goto(self, width: float, speed: float, force: float, blocking: bool = True):
         """Commands the gripper to a certain width
