@@ -4,4 +4,4 @@ gripper:
   cfg:
     ip: ${ip}
     port: ${port}
-    robot_ip: "192.168.0.10"
+    robot_ip: "172.16.0.2"
