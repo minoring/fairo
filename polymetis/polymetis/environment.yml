@@ -10,7 +10,6 @@ dependencies:
     - cmake
     # - cudatoolkit=11.3
     - doxygen
-    - eigen=3.3.9
     - grpc-cpp=1.41.1
     - hpp-fcl=1.6.0=py38h75fc22a_1
     - libprotobuf=3.18.1
