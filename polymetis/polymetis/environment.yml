@@ -14,7 +14,6 @@ dependencies:
     - hpp-fcl=1.6.0=py38h75fc22a_1
     - libprotobuf=3.18.1
     - openmpi=2.1.2
-    - pinocchio ==2.5.2
     - python ==3.8
     - urdfdom=2.3.3=hc9558a2_0
     - urdfdom_headers=1.0.5=hc9558a2_2
