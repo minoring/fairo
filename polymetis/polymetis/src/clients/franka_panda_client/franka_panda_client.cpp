@@ -77,15 +77,6 @@ FrankaTorqueControlClient::FrankaTorqueControlClient(
     robot_state_.add_motor_torques_external(0.0);
     robot_state_.add_motor_torques_desired(0.0);
   }
-  for (int i = 0; i < NUM_DOFS * NUM_DOFS; i++) {
-    robot_state_.add_mass_matrix(0.0);
-  }
-  for (int i = 0; i < 4 * 4; i++) {
-    robot_state_.add_ee_pose(0.0);
-  }
-  for (int i = 0; i < 6 * NUM_DOFS; i++) {
-    robot_state_.add_jacobian(0.0);
-  }
 
   // Parse yaml
   limit_rate_ = config["limit_rate"].as<bool>();
@@ -132,11 +123,6 @@ FrankaTorqueControlClient::FrankaTorqueControlClient(
         config["collision_behavior"]["lower_force"].as<std::array<double, 6>>(),
         config["collision_behavior"]["upper_force"]
             .as<std::array<double, 6>>());
-    // Set impedance, load.
-    robot_ptr_->setJointImpedance({3000., 3000., 3000., 2500., 2500., 2000., 2000.});
-    robot_ptr_->setCartesianImpedance({3000., 3000., 3000., 300., 300., 300.});
-    robot_ptr_->setK({1., 0., 0., 0., 0., 1., 0., 0., 0., 0., 1., 0., 0., 0., 0., 1});
-    robot_ptr_->setLoad(0.1, {0., 0., 0.,}, {0., 0., 0., 0., 0., 0., 0., 0., 0.,});
   }
 }
 
@@ -256,18 +242,6 @@ void FrankaTorqueControlClient::updateServerCommand(
       }
       robot_state_.set_motor_torques_desired(i,
                                              libfranka_robot_state.tau_J_d[i]);
-    }
-    std::array<double, 49> mass_matrix = model_ptr_->mass(libfranka_robot_state);
-    for (int i = 0; i < NUM_DOFS * NUM_DOFS; i++) {
-      robot_state_.set_mass_matrix(i, mass_matrix[i]);
-    }
-    auto ee_pose = model_ptr_->pose(franka::Frame::kEndEffector, libfranka_robot_state);
-    for (int i = 0; i < 4 * 4; i++) {
-      robot_state_.set_ee_pose(i, ee_pose[i]);
-    }
-    auto jacobian = model_ptr_->zeroJacobian(franka::Frame::kEndEffector, libfranka_robot_state);
-    for (int i = 0; i < 6 * NUM_DOFS; i++) {
-      robot_state_.set_jacobian(i, jacobian[i]);
     }
 
     robot_state_.set_prev_command_successful(prev_command_successful);
