@@ -29,6 +29,7 @@
 #define MAX_MODEL_BYTES 1048576         // 1 megabyte
 #define THRESHOLD_NS 1500000000         // 1.5s
 #define SPIN_INTERVAL_USEC 5000        // 0.005s (200hz)
+#define RT_LOW_PRIO 40
 
 using grpc::Server;
 using grpc::ServerBuilder;
